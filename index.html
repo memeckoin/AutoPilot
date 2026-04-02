@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTOPILOT</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Boogaloo&family=Bangers&family=Fredoka+One&display=swap');
+
+:root {
+–red: #e02020;
+–yellow: #f5c518;
+–green: #2db84b;
+–blue: #1e6fdb;
+–dark: #0a0a0a;
+}
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–dark);
+color: white;
+font-family: ‘Boogaloo’, cursive;
+overflow-x: hidden;
+min-height: 100vh;
+position: relative;
+}
+
+.bg-stripes {
+position: fixed;
+inset: 0;
+background: repeating-linear-gradient(
+-45deg,
+#0a0a0a 0px,
+#0a0a0a 30px,
+#111 30px,
+#111 60px
+);
+z-index: 0;
+animation: slideStripes 8s linear infinite;
+}
+@keyframes slideStripes {
+from { background-position: 0 0; }
+to { background-position: 84px 84px; }
+}
+
+.orb {
+position: fixed;
+border-radius: 50%;
+filter: blur(80px);
+opacity: 0.2;
+animation: floatOrb 8s ease-in-out infinite;
+z-index: 0;
+}
+.orb1 { width: 400px; height: 400px; background: var(–red); top: -100px; left: -100px; animation-delay: 0s; }
+.orb2 { width: 350px; height: 350px; background: var(–blue); bottom: -50px; right: -50px; animation-delay: 2s; }
+.orb3 { width: 300px; height: 300px; background: var(–yellow); top: 50%; left: 50%; animation-delay: 4s; }
+.orb4 { width: 250px; height: 250px; background: var(–green); bottom: 20%; left: 10%; animation-delay: 1s; }
+@keyframes floatOrb {
+0%, 100% { transform: translate(0, 0) scale(1); }
+50% { transform: translate(30px, -30px) scale(1.1); }
+}
+
+.content {
+position: relative;
+z-index: 10;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 40px 20px;
+min-height: 100vh;
+}
+
+.hero-banner {
+display: flex;
+font-family: ‘Bangers’, cursive;
+font-size: clamp(48px, 10vw, 110px);
+letter-spacing: 4px;
+line-height: 1;
+text-align: center;
+margin-bottom: 10px;
+filter: drop-shadow(0 0 30px rgba(255,255,255,0.2));
+flex-wrap: wrap;
+justify-content: center;
+}
+.h-red { color: var(–red); }
+.h-yellow { color: var(–yellow); }
+.h-green { color: var(–green); }
+.h-blue { color: var(–blue); }
+
+.subtitle {
+font-family: ‘Fredoka One’, cursive;
+font-size: clamp(14px, 3vw, 22px);
+color: #888;
+letter-spacing: 6px;
+text-transform: uppercase;
+margin-bottom: 50px;
+animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.5; }
+}
+
+.character-section {
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+margin-bottom: 60px;
+}
+
+.propeller-wrap {
+position: absolute;
+top: -40px;
+left: 50%;
+transform: translateX(-50%);
+z-index: 20;
+}
+.propeller {
+width: 90px;
+height: 22px;
+position: relative;
+animation: spin 0.6s linear infinite;
+}
+@keyframes spin {
+from { transform: rotate(0deg); }
+to { transform: rotate(360deg); }
+}
+.blade {
+position: absolute;
+width: 42px;
+height: 14px;
+border-radius: 50%;
+top: 50%;
+transform: translateY(-50%);
+}
+.blade-left {
+background: linear-gradient(135deg, #5be0ff, #1e6fdb);
+right: 50%;
+margin-right: 2px;
+transform: translateY(-50%) perspective(200px) rotateY(-20deg);
+}
+.blade-right {
+background: linear-gradient(135deg, #1e6fdb, #5be0ff);
+left: 50%;
+margin-left: 2px;
+transform: translateY(-50%) perspective(200px) rotateY(20deg);
+}
+.hub {
+position: absolute;
+width: 14px;
+height: 14px;
+background: radial-gradient(circle, #ff3333, #900);
+border-radius: 50%;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+z-index: 5;
+box-shadow: 0 0 10px #ff3333;
+}
+
+.character-ring {
+width: clamp(250px, 45vw, 420px);
+height: clamp(250px, 45vw, 420px);
+border-radius: 50%;
+background: conic-gradient(var(–red) 0deg, var(–red) 90deg, var(–yellow) 90deg, var(–yellow) 180deg, var(–green) 180deg, var(–green) 270deg, var(–blue) 270deg, var(–blue) 360deg);
+padding: 6px;
+animation: rotateBorder 6s linear infinite;
+box-shadow:
+0 0 60px rgba(224,32,32,0.3),
+0 0 60px rgba(30,111,219,0.3),
+0 0 100px rgba(255,255,255,0.1);
+}
+@keyframes rotateBorder {
+from { transform: rotate(0deg); }
+to { transform: rotate(360deg); }
+}
+.character-ring-inner {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+background: #111;
+overflow: hidden;
+display: flex;
+align-items: center;
+justify-content: center;
+animation: rotateBorder 6s linear infinite reverse;
+}
+.character-img {
+width: 90%;
+height: 90%;
+object-fit: contain;
+filter: drop-shadow(0 4px 20px rgba(0,0,0,0.8));
+}
+
+.stats-bar {
+display: flex;
+gap: 30px;
+flex-wrap: wrap;
+justify-content: center;
+margin-bottom: 60px;
+}
+.stat-card {
+background: rgba(255,255,255,0.05);
+border: 1px solid rgba(255,255,255,0.1);
+border-radius: 16px;
+padding: 20px 30px;
+text-align: center;
+backdrop-filter: blur(10px);
+transition: transform 0.2s, box-shadow 0.2s;
+min-width: 140px;
+}
+.stat-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 10px 40px rgba(255,255,255,0.1);
+}
+.stat-card:nth-child(1) { border-color: var(–red); }
+.stat-card:nth-child(2) { border-color: var(–yellow); }
+.stat-card:nth-child(3) { border-color: var(–green); }
+.stat-card:nth-child(4) { border-color: var(–blue); }
+.stat-num {
+font-family: ‘Bangers’, cursive;
+font-size: 36px;
+letter-spacing: 2px;
+display: block;
+}
+.stat-card:nth-child(1) .stat-num { color: var(–red); }
+.stat-card:nth-child(2) .stat-num { color: var(–yellow); }
+.stat-card:nth-child(3) .stat-num { color: var(–green); }
+.stat-card:nth-child(4) .stat-num { color: var(–blue); }
+.stat-label { font-size: 12px; color: #777; text-transform: uppercase; letter-spacing: 2px; }
+
+.features {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 20px;
+max-width: 900px;
+width: 100%;
+margin-bottom: 60px;
+}
+.feature {
+background: rgba(255,255,255,0.04);
+border-radius: 20px;
+padding: 30px 24px;
+text-align: center;
+border: 1px solid rgba(255,255,255,0.08);
+transition: all 0.3s;
+cursor: default;
+}
+.feature:hover {
+background: rgba(255,255,255,0.08);
+transform: scale(1.04);
+}
+.feature-icon { font-size: 48px; display: block; margin-bottom: 14px; }
+.feature-title {
+font-family: ‘Fredoka One’, cursive;
+font-size: 20px;
+margin-bottom: 8px;
+color: white;
+}
+.feature-desc { font-size: 14px; color: #777; line-height: 1.5; }
+
+.cta-section { text-align: center; margin-bottom: 60px; }
+.cta-btn {
+display: inline-flex;
+align-items: center;
+gap: 12px;
+font-family: ‘Bangers’, cursive;
+font-size: 32px;
+letter-spacing: 4px;
+padding: 18px 60px;
+border: none;
+border-radius: 60px;
+cursor: pointer;
+background: linear-gradient(135deg, var(–red), var(–yellow), var(–green), var(–blue));
+background-size: 300% 300%;
+animation: gradShift 3s ease infinite;
+color: white;
+text-transform: uppercase;
+text-decoration: none;
+box-shadow: 0 0 40px rgba(255,255,255,0.2);
+transition: transform 0.2s, box-shadow 0.2s;
+}
+.cta-btn:hover {
+transform: scale(1.08);
+box-shadow: 0 0 70px rgba(255,255,255,0.4);
+}
+.cta-btn:active { transform: scale(0.96); }
+.x-icon { font-size: 26px; line-height: 1; }
+@keyframes gradShift {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+
+.ticker-wrap {
+width: 100%;
+overflow: hidden;
+background: rgba(255,255,255,0.05);
+border-top: 1px solid rgba(255,255,255,0.1);
+border-bottom: 1px solid rgba(255,255,255,0.1);
+padding: 14px 0;
+margin-bottom: 60px;
+}
+.ticker {
+display: flex;
+gap: 60px;
+animation: ticker 18s linear infinite;
+width: max-content;
+}
+.tick-item {
+white-space: nowrap;
+font-family: ‘Fredoka One’, cursive;
+font-size: 16px;
+letter-spacing: 2px;
+color: #555;
+}
+.t-r { color: var(–red); }
+.t-y { color: var(–yellow); }
+.t-g { color: var(–green); }
+.t-b { color: var(–blue); }
+@keyframes ticker {
+from { transform: translateX(0); }
+to { transform: translateX(-50%); }
+}
+
+.floaters { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+.floater {
+position: absolute;
+animation: floatUp linear infinite;
+opacity: 0;
+}
+@keyframes floatUp {
+0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+10% { opacity: 1; }
+90% { opacity: 0.6; }
+100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+footer {
+font-size: 13px;
+color: #444;
+letter-spacing: 2px;
+text-align: center;
+padding-bottom: 40px;
+}
+
+.fade-in { opacity: 0; animation: fadeIn 0.8s ease forwards; }
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(30px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.d1 { animation-delay: 0.1s; }
+.d2 { animation-delay: 0.3s; }
+.d3 { animation-delay: 0.5s; }
+.d4 { animation-delay: 0.7s; }
+.d5 { animation-delay: 0.9s; }
+</style>
+
+</head>
+<body>
+
+<div class="bg-stripes"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<div class="orb orb4"></div>
+<div class="floaters" id="floaters"></div>
+
+<div class="content">
+
+  <div class="hero-banner fade-in d1">
+    <span class="h-red">AUT</span><span class="h-yellow">O</span><span class="h-green">PIL</span><span class="h-blue">OT</span>
+  </div>
+  <div class="subtitle fade-in d2">the world is running itself</div>
+
+  <div class="character-section fade-in d3">
+    <div class="propeller-wrap">
+      <div class="propeller">
+        <div class="blade blade-left"></div>
+        <div class="hub"></div>
+        <div class="blade blade-right"></div>
+      </div>
+    </div>
+    <div class="character-ring">
+      <div class="character-ring-inner">
+        <img class="character-img" src="/mnt/user-data/uploads/891F8DAC-6320-4EDC-A7D9-32A995B39836.png" alt="Autopilot">
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-bar fade-in d4">
+    <div class="stat-card">
+      <span class="stat-num">100%</span>
+      <span class="stat-label">Automated</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">Loop</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">0</span>
+      <span class="stat-label">Awareness</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">9000+</span>
+      <span class="stat-label">Vibes</span>
+    </div>
+  </div>
+
+  <div class="ticker-wrap fade-in d4">
+    <div class="ticker" id="ticker"></div>
+  </div>
+
+  <div class="features fade-in d5">
+    <div class="feature">
+      <span class="feature-icon">🚁</span>
+      <div class="feature-title">Always Spinning</div>
+      <div class="feature-desc">Propeller going. Smile on. No one is asking questions.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">😁</span>
+      <div class="feature-title">Blissfully Unaware</div>
+      <div class="feature-desc">Wake up. Scroll. Repeat. Nobody is steering this thing.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🌍</span>
+      <div class="feature-title">World on Autopilot</div>
+      <div class="feature-desc">7.9 billion units. All running the same loop. All smiling.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🔁</span>
+      <div class="feature-title">Endless Routine</div>
+      <div class="feature-desc">Same route. Same thoughts. Same day. Destination: TBD.</div>
+    </div>
+  </div>
+
+  <div class="cta-section fade-in d5">
+    <a class="cta-btn" href="https://x.com" target="_blank">
+      <span class="x-icon">𝕏</span> Follow on X
+    </a>
+  </div>
+
+  <footer>© 2025 AUTOPILOT — NOBODY IS FLYING THIS THING 🚁</footer>
+
+</div>
+
+<script>
+  const ticks = [
+    '<span class="t-r">🚁 AUTOPILOT</span>',
+    '<span class="t-y">😁 NOBODY IS STEERING</span>',
+    '<span class="t-g">🌍 WORLD ON LOOP</span>',
+    '<span class="t-b">🔁 SAME DAY EVERY DAY</span>',
+    '<span class="t-r">💯 VIBES ONLY</span>',
+    '<span class="t-y">🎈 PROPELLER GOES BRRR</span>',
+    '<span class="t-g">🧠 ZERO AWARENESS</span>',
+    '<span class="t-b">🚀 LFG</span>',
+  ];
+  const ticker = document.getElementById('ticker');
+  [...ticks, ...ticks].forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'tick-item';
+    el.innerHTML = `<span>${t}</span>`;
+    ticker.appendChild(el);
+  });
+
+  const emojis = ['🚁','😁','🌍','🔁','💯','⭐','✨','🔥'];
+  const container = document.getElementById('floaters');
+  for (let i = 0; i < 20; i++) {
+    const el = document.createElement('div');
+    el.className = 'floater';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (8 + Math.random() * 12) + 's';
+    el.style.animationDelay = (Math.random() * 15) + 's';
+    el.style.fontSize = (16 + Math.random() * 24) + 'px';
+    container.appendChild(el);
+  }
+
+  const propeller = document.querySelector('.propeller');
+  document.querySelector('.character-ring').addEventListener('mouseenter', () => {
+    propeller.style.animationDuration = '0.1s';
+  });
+  document.querySelector('.character-ring').addEventListener('mouseleave', () => {
+    propeller.style.animationDuration = '0.6s';
+  });
+</script>
+
+</body>
+</html>
